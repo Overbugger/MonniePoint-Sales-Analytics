@@ -171,7 +171,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-500 to to-blue-950 text-white select-none">
       <div className="flex flex-col items-center justify-center gap-10 w-full max-w-4xl p-8">
-        <h1 className="text-4xl font-bold">MonniePoint Sales Analytics</h1>
+        <h1 className="text-4xl font-bold">MoniePoint Sales Analytics</h1>
         <div className="flex flex-col items-center gap-4 w-full">
           <label 
             htmlFor="file-upload" 
