@@ -13,3 +13,11 @@ export function isValidDateFormat (filename: string) {
     const datePattern = /^\d{4}-\d{2}-\d{2}\.txt$/;
     return datePattern.test(filename);
   };
+
+  export function formatShortDate(dateString: string) {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
+  }

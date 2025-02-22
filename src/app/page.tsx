@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import JSZip from 'jszip';
 import { DailySales, Transaction } from '~/types/sales';
 import AnalyticsCard from '~/components/analyticsCard';
-import { getMonthName, isValidDateFormat } from '../utils/date';
+import { formatShortDate, getMonthName, isValidDateFormat } from '../utils/date';
 import { parsedTransaction } from '~/utils/transaction';
 
 export default function HomePage() {
@@ -169,7 +169,7 @@ export default function HomePage() {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-500 to to-blue-950 text-white">
+    <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-blue-500 to to-blue-950 text-white select-none">
       <div className="flex flex-col items-center justify-center gap-10 w-full max-w-4xl p-8">
         <h1 className="text-4xl font-bold">MonniePoint Sales Analytics</h1>
         <div className="flex flex-col items-center gap-4 w-full">
@@ -217,20 +217,26 @@ export default function HomePage() {
             </div>
             <AnalyticsCard
               heading="Highest Sales Volume Day"
-              metadataOne={`Date: ${analytics.highestDailyVolume.date}`}
-              metadataTwo={`Volume: ${analytics.highestDailyVolume.volume.toString()}`}
+              metadataOneHead='Date'
+              metadataTwoHead='Volume'
+              metadataOne={formatShortDate( analytics.highestDailyVolume.date)}
+              metadataTwo={analytics.highestDailyVolume.volume.toString()}
             />
 
             <AnalyticsCard
               heading="Highest Sales Value Day"
-              metadataOne={`Date: ${analytics.highestDailyValue.date}`}
-              metadataTwo={`Value: ${analytics.highestDailyValue.value.toFixed(2)}`}
+              metadataOneHead='Date'
+              metadataTwoHead='Value'
+              metadataOne={formatShortDate(analytics.highestDailyValue.date)}
+              metadataTwo={analytics.highestDailyValue.value.toFixed(2)}
             />
 
             <AnalyticsCard
               heading="Most Sold Product"
-              metadataOne={`Product ID: ${analytics.mostSoldProduct.productId}`}
-              metadataTwo={`Total Volume: ${analytics.mostSoldProduct.volume} units`}
+              metadataOneHead='Product ID'
+              metadataTwoHead='Volume'
+              metadataOne={analytics.mostSoldProduct.productId}
+              metadataTwo={`${analytics.mostSoldProduct.volume} units`}
             />
 
             <div className="bg-gray-800 p-4 rounded-lg">
@@ -259,8 +265,10 @@ export default function HomePage() {
 
             <AnalyticsCard
               heading="Peak Sales Hour"
-              metadataOne={`Hour: ${analytics.peakHour.hour}`}
-              metadataTwo={`Average Volume: ${analytics.peakHour.avgVolume.toFixed(2)} units`}
+              metadataOneHead='Hour'
+              metadataTwoHead='Average Volume'
+              metadataOne={`${analytics.peakHour.hour}Hrs`}
+              metadataTwo={`${analytics.peakHour.avgVolume.toFixed(2)} units`}
             />
           </div>
         )}
