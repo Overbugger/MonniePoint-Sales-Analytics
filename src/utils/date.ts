@@ -8,3 +8,8 @@ export function getMonthName (month: string) {
   const monthIndex = parts[1] ? parseInt(parts[1]) - 1 : 0;
   return months[monthIndex];
 };
+
+export function isValidDateFormat (filename: string) {
+    const datePattern = /^\d{4}-\d{2}-\d{2}\.txt$/;
+    return datePattern.test(filename);
+  };

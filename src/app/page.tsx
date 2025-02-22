@@ -4,7 +4,8 @@ import { useState, useRef } from 'react';
 import JSZip from 'jszip';
 import { DailySales, Transaction } from '~/types/sales';
 import AnalyticsCard from '~/components/analyticsCard';
-import { getMonthName } from '../utils/date';
+import { getMonthName, isValidDateFormat } from '../utils/date';
+import { parsedTransaction } from '~/utils/transaction';
 
 export default function HomePage() {
   const [file, setFile] = useState<File | null>(null);
@@ -20,43 +21,18 @@ export default function HomePage() {
   const [error, setError] = useState<string | null>(null);
   const analyticsRef = useRef<HTMLDivElement>(null);
 
-  const isValidDateFormat = (filename: string) => {
-    const datePattern = /^\d{4}-\d{2}-\d{2}\.txt$/;
-    return datePattern.test(filename);
-  };
-
-  const parsedTransaction = (line: string): Transaction => {
-    const [staffId, timestamp, product, amount] = line.split(',');
-    const products: { [key: string]: number } = {};
-    
-    const parsedProductsStr = product ? product.slice(1, -1) : '';
-    parsedProductsStr.split('|').forEach(prod => {
-      const [id, quantity] = prod.split(':');
-      if (id && quantity) {
-        products[id] = parseInt(quantity);
-      }
-    });
-
-    return {
-      salesStaffId: staffId || '',
-      timestamp: timestamp ? new Date(timestamp) : new Date(),
-      products,
-      saleAmount: parseFloat(amount || '0')
-    };
-  };
-
   const analyzeTransactions = (textContents: { [key: string]: string }) => {
-    const allTransactions: Transaction[] = [];
+    const Transactions: Transaction[] = [];
     const dailySales: { [key: string]: DailySales } = {};
     const productVolumes: { [key: string]: number } = {};
     const monthlyStaffSales: { [key: string]: { [key: string]: number } } = {};
     const hourlyTransactions: { [key: number]: number[] } = {};
-
+ 
     Object.values(textContents).forEach(fileContent => {
       fileContent.split('\n').forEach(line => {
         if (line.trim()) {
           const transaction = parsedTransaction(line);
-          allTransactions.push(transaction);
+          Transactions.push(transaction);
 
           const dateKey = transaction.timestamp?.toISOString().split('T')[0];
           // console.log('dateKey:', dateKey);
